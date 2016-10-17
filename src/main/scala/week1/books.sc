@@ -1,6 +1,6 @@
 case class Book(title: String, authors: List[String])
 
-val books: List[Book] = List(
+val books: Set[Book] = Set(
   Book(title = "Structure and Interpretation of Computer Programs",
        authors = List("Abelson, Harald", "Sussman, Gerald J.")),
   Book(title = "Programming in Scala",
@@ -20,7 +20,7 @@ for(b <- books; a <- b.authors if a startsWith "Bird,") yield b.title
 // titles of books which have "Program" in the title
 for(b <- books; if (b.title indexOf "Program") >= 0) yield b.title
 // names of authors having written at least two books
-( for{
+for{
   b1 <- books
   b2 <- books
   if b1.title < b2.title
@@ -28,4 +28,4 @@ for(b <- books; if (b.title indexOf "Program") >= 0) yield b.title
     a2 <- b2.authors
       if a1 == a2
 } yield a1
-  ).distinct
+
