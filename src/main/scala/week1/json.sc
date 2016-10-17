@@ -42,4 +42,11 @@ def show(json: JSON): String = json match {
 
 show(data)
 
+val f: String => String = { case "ping" => "pong" }
+f("ping")
+
+val g: PartialFunction[String,String] = { case "ping" => "pong" }
+g("ping")
+//g("abc")
+if (g.isDefinedAt("abc")) g("abc") else ""
 
