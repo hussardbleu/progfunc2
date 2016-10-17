@@ -9,3 +9,4 @@ case class JNum(num: Double) extends JSON
 case class JStr(str: String) extends JSON
 case class JBool(bool: Boolean) extends JSON
 case object JNull extends  JSON
+
