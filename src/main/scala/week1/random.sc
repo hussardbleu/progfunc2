@@ -28,9 +28,9 @@ val booleans = for (x <- integers) yield x > 0
   * def generate = (integers.generate, integers.generate)
   * }
   */
-val pairs = for {
-  x <- integers
-  y <- integers
+def pairs[T, U](t: Generator[T], u: Generator[U]): Generator[(T,U)] = for {
+  x <- t
+  y <- u
 } yield (x,y)
 
 def single[T](x: T): Generator[T] = new Generator[T] {
@@ -58,7 +58,6 @@ def nonEmptyLists = for {
 } yield head :: tail
 
 // Generator for Tree
-
 trait Tree
 
 case class Inner(left: Tree, right: Tree) extends Tree
@@ -80,4 +79,17 @@ def innerNodes = for {
 
 trees.generate
 
+// Using Generator to implement a random test function
 
+def test[T](g: Generator[T], numTimes: Int = 100)
+    (test: T => Boolean): Unit = {
+        for (i <- 0 until numTimes){
+          val value = g.generate
+          assert(test(value), "test failed for "+ value)
+        }
+    println("passed " + numTimes + " tests")
+    }
+
+test(pairs(lists, lists)) {
+  case (xs,ys) => (xs ++ ys).length > xs.length
+}
