@@ -43,7 +43,7 @@ def choose(lo: Int, hi: Int): Generator[Int] =
 def oneOf[T](xs: T*): Generator[T]=
   for(idx <- choose(0, xs.length)) yield xs(idx)
 
-
+// Generator for List[Int]
 def lists: Generator[List[Int]] = for {
   isEmpty <- booleans
   list <- if(isEmpty) emptyLists else nonEmptyLists
@@ -56,3 +56,28 @@ def nonEmptyLists = for {
   tail <- lists
 
 } yield head :: tail
+
+// Generator for Tree
+
+trait Tree
+
+case class Inner(left: Tree, right: Tree) extends Tree
+case class Leaf(x: Int) extends Tree
+
+def trees: Generator[Tree] = for {
+  isLeaf <- booleans
+  tree <- if(isLeaf) leafs else innerNodes
+} yield tree
+
+def leafs = for{
+  x <- integers
+} yield Leaf(x)
+
+def innerNodes = for {
+  left <- trees
+  right <- trees
+} yield Inner(left, right)
+
+trees.generate
+
+
