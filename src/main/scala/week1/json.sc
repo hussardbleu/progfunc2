@@ -50,3 +50,12 @@ g("ping")
 //g("abc")
 if (g.isDefinedAt("abc")) g("abc") else ""
 
+val dataList: List[JSON] = List(data)
+  for{
+    JObj(bindings) <- dataList
+    JSeq(phones) = bindings("phoneNumbers")
+    JObj(phone) <- phones
+    JStr(digits) = phone("number")
+    if digits startsWith "212"
+  } yield (show(bindings("firstName")), show(bindings("lastName")))
+
