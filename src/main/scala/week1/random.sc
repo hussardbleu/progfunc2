@@ -16,15 +16,19 @@ val integers = new Generator[Int] {
   def generate = rand.nextInt()
 }
 
-val booleans = new Generator[Boolean] {
-  def generate = integers.generate > 0
-}
-val booleans2 = for (x <- integers) yield x > 0
+/**
+ *val booleans = new Generator[Boolean] {
+ * def generate = integers.generate > 0
+}*/
 
-val pairs = new Generator[(Int,Int)] {
-  def generate = (integers.generate, integers.generate)
-}
-val pairs2 = for {
+val booleans = for (x <- integers) yield x > 0
+
+/**
+  * val pairs = new Generator[(Int,Int)] {
+  * def generate = (integers.generate, integers.generate)
+  * }
+  */
+val pairs = for {
   x <- integers
   y <- integers
 } yield (x,y)
@@ -40,3 +44,15 @@ def oneOf[T](xs: T*): Generator[T]=
   for(idx <- choose(0, xs.length)) yield xs(idx)
 
 
+def lists: Generator[List[Int]] = for {
+  isEmpty <- booleans
+  list <- if(isEmpty) emptyLists else nonEmptyLists
+} yield list
+
+def emptyLists = single(Nil)
+
+def nonEmptyLists = for {
+  head <- integers
+  tail <- lists
+
+} yield head :: tail
