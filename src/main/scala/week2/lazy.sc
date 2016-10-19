@@ -44,4 +44,9 @@ def sqrtStream(x: Double): Stream[Double] = {
   guesses
 }
 
-(sqrtStream(9) take 100) toList
+(sqrtStream(9) take 100).toList
+
+def isGoodEnough(guess: Double, x: Double) =
+  math.abs((guess * guess - x) / x) < 0.00001
+
+(sqrtStream(9).filter(guess => isGoodEnough(guess,9))  take 100).toList
