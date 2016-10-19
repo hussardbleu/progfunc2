@@ -37,4 +37,16 @@ class Pouring(capacity: Vector[Int]) {
     (for (g <- glasses) yield Empty(g)) ++
     (for (g <- glasses) yield Fill(g)) ++
     (for (from <- glasses; to <- glasses if from != to) yield Pour(from, to))
+
+  // Paths
+
+  class Path(history: List[Move]) {
+    def endState: State = trackState(history)
+    private def trackState(xs: List[Move]): State = xs match {
+      case Nil => initialState
+      case move :: xs1 => move change trackState(xs1)
+    }
+
+
+  }
 }
