@@ -47,4 +47,17 @@ class Pouring(capacity: Vector[Int]) {
   }
 
   val initialPath = new Path(Nil)
+
+  def from(paths: Set[Path]): Stream[Set[Path]] =
+    if (paths.isEmpty) Stream.empty
+    else{
+      val more = for {
+        path <- paths
+        next <- moves map (x => path.extend(x))
+      } yield next
+      paths #:: from(more)
+    }
+
+  val pathSets = from(Set(initialPath))
+
 }
