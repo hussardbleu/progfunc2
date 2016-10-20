@@ -6,6 +6,8 @@ problem.moves
 
 problem.pathSets.take(3).toList
 
+problem.solutions(6)
+
 
 
 
