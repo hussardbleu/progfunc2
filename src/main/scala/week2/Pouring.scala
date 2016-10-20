@@ -31,7 +31,7 @@ class Pouring(capacity: Vector[Int]) {
   }
 
 
-  val glasses = 0 until capacity.length
+  val glasses = capacity.indices
 
   val moves =
     (for (g <- glasses) yield Empty(g)) ++
@@ -42,5 +42,9 @@ class Pouring(capacity: Vector[Int]) {
 
   class Path(history: List[Move]) {
     def endState: State = (history foldRight initialState) ((x,y) => x change y)
+    def extend(move: Move) = new Path(move :: history)
+    override def toString = (history.reverse mkString " ") + "--> " + endState
   }
+
+  val initialPath = new Path(Nil)
 }
